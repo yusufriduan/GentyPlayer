@@ -14,8 +14,10 @@ const App: React.FC = () => {
         <Header />
       </header>
       <main>
-        <Date />
-        <Clock />
+        <div className="date-clock-container">
+          <Date />
+          <Clock />
+        </div>
         <img src={backgroundImage} alt="Background" className="backgroundImg" />
         <Player />
       </main>

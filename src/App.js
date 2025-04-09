@@ -5,7 +5,7 @@ import "./App.css";
 function App() {
   const handlePlay = async () => {
     try {
-      await axios.get("http://localhost:5000/play");
+      await axios.get("https://spotipy-backend.onrender.com/play");
     } catch (error) {
       console.error("Error playing the song", error);
     }
@@ -13,7 +13,7 @@ function App() {
 
   const handlePause = async () => {
     try {
-      await axios.get("http://localhost:5000/pause");
+      await axios.get("https://spotipy-backend.onrender.com/pause");
     } catch (error) {
       console.error("Error pausing the song", error);
     }

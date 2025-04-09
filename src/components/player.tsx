@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../App.css";
 import spotifyButton from "./LoginButton.tsx";
@@ -16,6 +16,7 @@ interface PlaybackState {
 function Player() {
   const [playbackState, setPlaybackState] = useState<PlaybackState | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
@@ -29,16 +30,30 @@ function Player() {
   }, []);
 
   const fetchCurrentPlaying = (access_token: string) => {
-    axios.get("http://localhost:5000/currentPlaying", {
+    axios.get("https://spotipy-backend.onrender.com/currentPlaying", {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       })
       .then((response) => {
         setPlaybackState(response.data);
+        scheduleNextFetch(response.data);
         setProgress(response.data.progress_ms);
       })
       .catch((error) => console.error("Error fetching playback state", error));
+  };
+
+  const scheduleNextFetch = (state: PlaybackState) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    const duration = state.item.duration_ms - state.progress_ms;
+    if (duration > 0) {
+      timeoutRef.current = setTimeout(() => {
+        fetchCurrentPlaying(sessionStorage.getItem("access_token")!);
+      }, duration + 1000); // Adding a buffer of 1 second
+    }
   };
 
   useEffect(() => {
@@ -59,7 +74,7 @@ function Player() {
 
   const handlePlay = async () => {
     try {
-      await axios.get("http://localhost:5000/play", {
+      await axios.get("https://spotipy-backend.onrender.com/play", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         },
@@ -72,12 +87,15 @@ function Player() {
 
   const handlePause = async () => {
     try {
-      await axios.get("http://localhost:5000/pause", {
+      await axios.get("https://spotipy-backend.onrender.com/pause", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         },
       });
       setPlaybackState((prevState) => prevState && { ...prevState, is_playing: false });
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     } catch (error) {
       console.error("Error pausing the song", error);
     }
@@ -85,7 +103,7 @@ function Player() {
 
   const handleForward = async () => {
     try {
-      await axios.get("http://localhost:5000/forward", {
+      await axios.get("https://spotipy-backend.onrender.com/forward", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         },
@@ -98,7 +116,7 @@ function Player() {
 
   const handleBackward = async () => {
     try {
-      await axios.get("http://localhost:5000/backward", {
+      await axios.get("https://spotipy-backend.onrender.com/backward", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         },

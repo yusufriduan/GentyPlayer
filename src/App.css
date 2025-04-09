@@ -118,20 +118,22 @@ header {
   filter: blur(5px);
 }
 
-.clock {
-  position: absolute;
-  top: 3em;
-  left: 32.5%;
+.date-clock-container {
+  position: relative;
+  top: 8em;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
   z-index: 10;
+}
+
+.clock {
   font-size: 100px;
   font-family: "Genty Regular", sans-serif;
 }
 
 .date {
-  position: absolute;
-  top: 5em;
-  left: 32.5%;
-  z-index: 10;
   font-size: 50px;
   font-family: "Genty Regular", sans-serif;
 }

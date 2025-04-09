@@ -3,7 +3,7 @@ import '../App.css';
 function logOutButton() {
     const logOut =  async () => {
       try {
-        const response = await fetch("http://localhost:5000/logout", {
+        const response = await fetch("https://spotipy-backend.onrender.com/logout", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
