@@ -29,7 +29,7 @@ const App: React.FC = () => {
           <Clock />
         </div>
         <img src={backgroundImage} alt="Background" className="backgroundImg" />
-        <Player />
+        {isLoggedIn ? (<Player />) : (<Player />)}
       </main>
       <Footer />
     </div>
