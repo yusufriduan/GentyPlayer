@@ -52,26 +52,20 @@ def redirectPage():
         return jsonify({"error": "Failed to retrieve access token"}), 400
 
     session['token_info'] = json.dumps(token_info)
-    print("Token info stored in session:", session['token_info'])
 
     # Get user details
     sp = spotipy.Spotify(auth=token_info['access_token'])
     user_details = sp.current_user()
 
-    # Debugging statements
-    print("Token Info:", token_info)
-    print("User Details:", user_details)
-
     # Redirect to React application with token info and user details
     react_redirect_url = (
-        f"https://clock-self-one.vercel.app/"
+        f"https://clock-self-one.vercel.app/?"
         f"access_token={token_info['access_token']}&"
         f"refresh_token={token_info['refresh_token']}&"
         f"expires_in={token_info['expires_in']}&"
         f"user_id={user_details['id']}&"
         f"user_name={user_details['display_name']}"
     )
-    print("Redirect URL:", react_redirect_url)
     return redirect(react_redirect_url)
 
 def get_token():

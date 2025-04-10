@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Clock from "./components/clock.tsx";
 import Date from "./components/date.tsx";
@@ -8,6 +8,16 @@ import Footer from "./components/footer.tsx";
 import backgroundImage from "./assets/1531.png";
 
 const App: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem("access_token");
+    if (accessToken) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
