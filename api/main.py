@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 from flask import Flask, request, redirect, session, send_from_directory, jsonify
 from flask_cors import CORS
 
-app = Flask(__name__, static_folder='.../')
-CORS(app, origins='http://localhost:5173', supports_credentials=True)
+app = Flask(__name__)
+CORS(app, origins='https://clock-self-one.vercel.app', supports_credentials=True)
 
 app.secret_key = 'super secret key'
 app.config['SESSION_COOKIE_NAME'] = 'spotify-login-session'
@@ -64,7 +64,7 @@ def redirectPage():
 
     # Redirect to React application with token info and user details
     react_redirect_url = (
-        f"http://localhost:5173/callback?"
+        f"https://clock-self-one.vercel.app/"
         f"access_token={token_info['access_token']}&"
         f"refresh_token={token_info['refresh_token']}&"
         f"expires_in={token_info['expires_in']}&"
@@ -168,7 +168,7 @@ def create_spotify_oauth():
 @app.after_request
 def add_cors_headers(response):
     if 'Access-Control-Allow-Origin' not in response.headers:
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:5173')
+        response.headers.add('Access-Control-Allow-Origin', 'https://clock-self-one.vercel.app')
     if 'Access-Control-Allow-Credentials' not in response.headers:
         response.headers.add('Access-Control-Allow-Credentials', 'true')
     if 'Access-Control-Allow-Headers' not in response.headers:
@@ -190,4 +190,4 @@ def handle_backward_options():
     return response
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run
