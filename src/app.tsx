@@ -35,12 +35,14 @@ const App: React.FC = () => {
           <Date />
           <Clock />
         </div>
+        <div className="player-container">
+          {isLoggedIn ? (<Player />) : (<Player />)}
+        </div>
         {isNight ? (
-          <img src={backgroundImageDark} alt="Background" className="backgroundImg" />
+          <img src={backgroundImageDark} alt="BackgroundDark" className="backgroundImg" />
         ) : (
-          <img src={backgroundImageLight} alt="Background" className="backgroundImg" />
+          <img src={backgroundImageLight} alt="BackgroundLight" className="backgroundImg" />
         )}
-        {isLoggedIn ? (<Player />) : (<Player />)}
       </main>
       <Footer />
     </div>
