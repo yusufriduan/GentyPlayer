@@ -10,10 +10,17 @@ export default function AuthHandler() {
 
     useEffect(() => {
         const accessToken = searchParams.get("access_token");
+        const refreshToken = searchParams.get("refresh_token");
 
         if (accessToken) {
             sessionStorage.setItem("access_token", accessToken);
+            if (refreshToken) {
+                sessionStorage.setItem("refresh_token", refreshToken);
+            }
+            setIsLoggedIn(true);
             router.replace("/");
+        } else {
+            setIsLoggedIn(false);
         }
     }, [searchParams, router]);
 
