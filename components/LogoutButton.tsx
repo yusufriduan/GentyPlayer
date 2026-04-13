@@ -1,25 +1,24 @@
-function logOutButton() {
-    const logOut =  async () => {
-      try {
-        const response = await fetch("https://spotipy-backend.onrender.com/logout", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-  
-        if (response.ok) {
-          sessionStorage.clear();
-          window.location.href = "/";
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-    return (
-      <div className="logOutButton">
-        <button onClick={logOut}>Log Out</button>
-      </div>
-    );
+import React from "react";
+import { useRouter } from "next/navigation";
+
+const logOutButton: React.FC = () => {
+  const router = useRouter();
+
+  const logOut =  async () => {
+    const response = await fetch("/api/spotify/logout", {method: "POST",});
+
+    sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("refresh_token");
+    sessionStorage.removeItem("userName");
+
+    window.location.href = "/";
+  };
+
+  return (
+    <div className="logOutButton">
+      <button onClick={logOut}>Log Out</button>
+    </div>
+  );
 };
   
 export default logOutButton;
