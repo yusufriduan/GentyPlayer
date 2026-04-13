@@ -18,7 +18,7 @@ export default function AuthHandler() {
                 sessionStorage.setItem("refresh_token", refreshToken);
             }
             setIsLoggedIn(true);
-            window.history.replaceState({}, document.title, "/");
+            window.history.replaceState({}, document.title, window.location.pathname);
 
             router.refresh();
         } else {
