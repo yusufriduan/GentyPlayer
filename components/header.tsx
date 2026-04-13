@@ -11,7 +11,7 @@ const Header: React.FC = () => {
     const storedUserName = sessionStorage.getItem("userName");
     const access_token = sessionStorage.getItem("access_token");
 
-    if (storedUserName) setUserName(storedUserName);
+    if (access_token) setUserName(storedUserName || "User");
     setIsLoggedIn(!!access_token);
   }, []);
 
