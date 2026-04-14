@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
 
     try {
         const response = await fetch('https://api.spotify.com/v1/me/player/next', {
+            method: 'PUT',
             headers: {
                 Authorization: authHeader,
             },
