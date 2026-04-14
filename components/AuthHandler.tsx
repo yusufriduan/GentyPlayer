@@ -9,21 +9,32 @@ export default function AuthHandler() {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
     useEffect(() => {
-        const accessToken = searchParams.get("access_token");
-        const refreshToken = searchParams.get("refresh_token");
+        const AuthHandler = async () => {
+            const accessToken = searchParams.get("access_token");
+            
+            if (accessToken) {
+                localStorage.setItem("access_token", accessToken);
 
-        if (accessToken) {
-            sessionStorage.setItem("access_token", accessToken);
-            if (refreshToken) {
-                sessionStorage.setItem("refresh_token", refreshToken);
+                //Fetch user data and store in session storage
+                const userRes = await fetch("https://api.spotify.com/v1/me", {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+                const userData = await userRes.json();
+                sessionStorage.setItem("userName", userData.display_name);
+
+                setIsLoggedIn(true);
+
+                window.history.replaceState({}, document.title, "/");
+                router.refresh();
+            } else {
+                setIsLoggedIn(false);
+                router.push("/");
             }
-            setIsLoggedIn(true);
-            window.history.replaceState({}, document.title, window.location.pathname);
+        };
 
-            router.refresh();
-        } else {
-            setIsLoggedIn(false);
-        }
+        AuthHandler();
     }, [searchParams, router]);
 
     return null;
