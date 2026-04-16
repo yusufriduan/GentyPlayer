@@ -4,16 +4,25 @@ import React, { useState, useEffect } from "react";
 import LogoutButton from "./LogoutButton";
 
 const Header: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("Guest");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const storedUserName = sessionStorage.getItem("userName");
-    const access_token = sessionStorage.getItem("access_token");
+        const syncLogin = () => {
+            const accessToken = sessionStorage.getItem("access_token");
+            const userName = sessionStorage.getItem("userName");
+            setIsLoggedIn(!!accessToken);
 
-    if (access_token) setUserName(storedUserName || "User");
-    setIsLoggedIn(!!access_token);
-  }, []);
+            if (userName) {
+              setUserName(userName);
+            } else {
+              setUserName("Guest");
+            }
+        };
+        syncLogin();
+        window.addEventListener("storage", syncLogin);
+        return () => window.removeEventListener("storage", syncLogin);
+    }, []);
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();

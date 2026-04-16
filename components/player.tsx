@@ -28,7 +28,7 @@ function Player() {
             });
             const data = await res.json();
 
-            if (data && data.item) {
+            if (data?.item) {
                 setPlaybackState(data);
                 setProgress(data.progress_ms);
                 scheduleNextFetch(data, accessToken);
@@ -41,13 +41,26 @@ function Player() {
 
     const scheduleNextFetch = (state: PlaybackState, accessToken: string) => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        
         const duration = state.item.duration_ms - state.progress_ms;
-        if (duration > 0) {
-            timeoutRef.current = setTimeout(() => {
-                fetchCurrentPlaying(accessToken);
-            }, duration + 1000); // Adding a buffer of 1 second
-        }
+        const delay = Math.max(duration + 1000, 3000); // Ensure a minimum delay of 3 seconds to avoid rapid polling
+        
+        timeoutRef.current = setTimeout(() => fetchCurrentPlaying(accessToken), delay);
     };
+
+    useEffect(() => {
+        const syncLogin = () => {
+            const accessToken = sessionStorage.getItem("access_token");
+            setIsLoggedIn(!!accessToken);
+
+            if (accessToken && !playbackState) {
+            fetchCurrentPlaying(accessToken);
+            }
+        };
+        syncLogin();
+        window.addEventListener("storage", syncLogin);
+        return () => window.removeEventListener("storage", syncLogin);
+    }, [playbackState, fetchCurrentPlaying]);
 
     const handlePlayback = async (action: 'play' | 'pause' | 'forward' | 'backward') => {
         const accessToken = sessionStorage.getItem("access_token");
@@ -66,23 +79,14 @@ function Player() {
     };
 
     useEffect(() => {
-    const access_token = sessionStorage.getItem("access_token");
-    setIsLoggedIn(!!access_token);
-    
-    if (access_token) {
-      fetchCurrentPlaying(access_token);
-    }
-  }, []);
+        let interval: ReturnType<typeof setInterval> | null = null;
+        if (playbackState?.is_playing) {
+        interval = setInterval(() => setProgress(p => p + 1000), 1000);
+        }
+        return () => { if (interval) clearInterval(interval); };
+    }, [playbackState?.is_playing]);
 
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval> | null = null;
-    if (playbackState?.is_playing) {
-      interval = setInterval(() => setProgress(p => p + 1000), 1000);
-    }
-    return () => { if (interval) clearInterval(interval); };
-  }, [playbackState?.is_playing]);
-
-  const getProgressPercentage = () => playbackState ? (progress / playbackState.item.duration_ms) * 100 : 0;
+    const getProgressPercentage = () => playbackState ? (progress / playbackState.item.duration_ms) * 100 : 0;
 
     return (
         <div className="player">
@@ -110,6 +114,6 @@ function Player() {
         )}
         </div>
     );
-    }
+}
 
-    export default Player;
+export default Player;
