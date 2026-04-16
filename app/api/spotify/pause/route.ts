@@ -15,9 +15,10 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        if (response.status === 204 || response.status === 400) {
-            return NextResponse.json({ error: 'No track currently playing' }, { status: 204 });
+        if (response.status === 204) {
+            return new NextResponse(null, { status: 204 });
         }
+
 
         const data = await response.json();
         return NextResponse.json(data);
