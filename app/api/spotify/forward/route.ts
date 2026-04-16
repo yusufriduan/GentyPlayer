@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
 
     if (!authHeader) {
@@ -9,6 +9,7 @@ export async function PUT(req: NextRequest) {
 
     try {
         const response = await fetch('https://api.spotify.com/v1/me/player/next', {
+            method: 'POST',
             headers: {
                 Authorization: authHeader,
             },
