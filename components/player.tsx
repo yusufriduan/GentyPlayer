@@ -81,12 +81,32 @@ function Player() {
     useEffect(() => {
         let interval: ReturnType<typeof setInterval> | null = null;
         if (playbackState?.is_playing) {
-        interval = setInterval(() => setProgress(p => p + 1000), 1000);
+        interval = setInterval(() => {
+            setProgress(p => {
+                if (p >= playbackState.item.duration_ms) {
+                    if (interval) clearInterval(interval);
+                    return playbackState.item.duration_ms;
+                }
+                return p + 1000;
+            });
+        }, 1000);
         }
         return () => { if (interval) clearInterval(interval); };
-    }, [playbackState?.is_playing]);
+    }, [playbackState?.is_playing, playbackState?.item.duration_ms]);
 
     const getProgressPercentage = () => playbackState ? (progress / playbackState.item.duration_ms) * 100 : 0;
+
+    useEffect(() => {
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') {
+                const token = sessionStorage.getItem("access_token");
+                if (token) fetchCurrentPlaying(token);
+            }
+        };
+
+        document.addEventListener("visibilitychange", handleVisibility);
+        return () => document.removeEventListener("visibilitychange", handleVisibility);
+    }, [fetchCurrentPlaying]);
 
     return (
         <div className="player">
