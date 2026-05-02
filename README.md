@@ -1,4 +1,4 @@
-# Spotify Player
+# GentyPlayer (was Spotify Player)
 
 This project is a Spotify Player that allows users to control media playback through a custom interface. It leverages the Spotify Web API to interact with the user's Spotify account and manage playback.
 
