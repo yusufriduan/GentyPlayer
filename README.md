@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GentyPlayer (was Spotify-Player)
 
-## Getting Started
+**GentyPlayer** is a minimalist, typography-focused Spotify controller built with **Next.js**[cite: 2]. It provides a clean, aesthetic interface for managing your music playback, integrated directly with your Spotify account[cite: 2].
 
-First, run the development server:
+**Live Demo:** [GentyPlayer.vercel.app](https://GentyPlayer.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Aesthetic Features
+*   **Custom Typography**: Features the unique visual identity of the *Genty* and *GentySans* font families[cite: 2].
+*   **Dashboard Elements**: Includes integrated localized clock and date components for a workspace-ready feel[cite: 2].
+*   **Aesthetic UI**: Optimized for a sleek, modern web experience using Tailwind CSS[cite: 2].
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Core Features
+*   **Playback Control**: Play, pause, skip forward, and skip backward through your Spotify queue[cite: 2].
+*   **Real-time Info**: Displays current track information and playback status[cite: 2].
+*   **Spotify Integration**: Secure OAuth flow for Spotify account connection via dedicated API routes[cite: 2].
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Requirements
+*   **Spotify Premium**: Required by the Spotify Web API for playback control[cite: 2].
+*   **Spotify Developer Account**: Required to obtain your own `Client ID` and `Client Secret`[cite: 2].
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Setup & Installation
 
-## Learn More
+1.  **Clone the repository**:
+    ```bash
+    git clone [https://github.com/yusufriduan/GentyPlayer.git](https://github.com/yusufriduan/GentyPlayer.git) && cd GentyPlayer-nextjs-migration
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3.  **Configure Environment Variables**:
+    Create a `.env.local` file in the root directory and add your Spotify credentials:
+    ```env
+    SPOTIFY_CLIENT_ID=your_client_id
+    SPOTIFY_CLIENT_SECRET=your_client_secret
+    SPOTIFY_REDIRECT_URI=http://localhost:3000/api/spotify/callback
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) to view the application[cite: 2].
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🌐 Deployment
+This project is optimized for deployment on **Vercel**[cite: 2]. Remember to add your production redirect URIs to the Spotify Developer Dashboard to enable authentication in the live environment.
